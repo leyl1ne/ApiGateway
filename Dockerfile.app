@@ -9,15 +9,15 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app ./cmd/api
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o gateway ./cmd/gateway
 
 FROM alpine:3.20
 
 WORKDIR /app
 
-COPY --from=builder /app/app .
+COPY --from=builder /app/gateway .
 COPY --from=builder /app/configs/example.yaml ./configs/example.yaml  
 
 EXPOSE 8080
 
-CMD ["./app"]
+CMD ["./gateway"]
